@@ -1,20 +1,6 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# Restaurant Website
 
-# Run and deploy your AI Studio app
-
-This contains everything you need to run your app locally.
-
-View your app in AI Studio: https://ai.studio/apps/b632a44a-4f4a-482e-b399-14f86fe5834c
-
-## Run Locally
-
-**Prerequisites:**  Node.js
+This restaurant website is a modern and user-friendly platform designed to give customers an attractive online experience. It showcases the restaurant’s food, menu, services, and overall atmosphere through a clean and responsive design. The website makes it easy for visitors to explore available dishes, learn more about the restaurant, and find important contact and location information. It is designed to work smoothly across desktop, tablet, and mobile devices while providing a simple and engaging browsing experience.
 
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+Author= Amrit Sitaula
