@@ -1,0 +1,82 @@
+{
+  "entities": {
+    "Reservation": {
+      "title": "Reservation",
+      "description": "Rooftop table reservation at Le Patio",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string"
+        },
+        "time": {
+          "type": "string"
+        },
+        "guests": {
+          "type": "string"
+        },
+        "seatingPreference": {
+          "type": "string"
+        },
+        "requiresWheelchair": {
+          "type": "boolean"
+        },
+        "requiresHighChair": {
+          "type": "boolean"
+        },
+        "specialRequest": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["Pending", "Confirmed", "Cancelled"]
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        }
+      },
+      "required": ["name", "phone", "email", "date", "time", "guests", "seatingPreference", "status", "createdAt", "userId"]
+    },
+    "User": {
+      "title": "User",
+      "description": "User profile containing identity and contact details",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        }
+      },
+      "required": ["name", "phone", "email", "createdAt"]
+    }
+  },
+  "firestore": {
+    "reservations/{reservationId}": {
+      "schema": "Reservation",
+      "description": "Rooftop table reservations"
+    },
+    "users/{userId}": {
+      "schema": "User",
+      "description": "Registered user profile documents"
+    }
+  }
+}

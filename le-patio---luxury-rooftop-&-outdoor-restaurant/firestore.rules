@@ -1,0 +1,102 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 1. Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper Functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (request.auth.token.email == "amritsitaula2022@gmail.com" || exists(/databases/$(database)/documents/admins/$(request.auth.uid)));
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidReservation(data) {
+      return data.keys().hasAll(['name', 'phone', 'email', 'date', 'time', 'guests', 'seatingPreference', 'status', 'createdAt', 'userId'])
+        && data.name is string && data.name.size() <= 100
+        && data.phone is string && data.phone.size() <= 30
+        && data.email is string && data.email.size() <= 100
+        && data.date is string && data.date.size() <= 15
+        && data.time is string && data.time.size() <= 10
+        && data.guests is string && data.guests.size() <= 10
+        && data.seatingPreference is string && data.seatingPreference.size() <= 50
+        && data.status is string && (data.status == 'Pending' || data.status == 'Confirmed' || data.status == 'Cancelled')
+        && data.createdAt is string && data.createdAt.size() <= 50
+        && data.userId is string && data.userId.size() <= 128
+        && (!data.keys().hasAny(['specialRequest']) || data.specialRequest is string)
+        && (!data.keys().hasAny(['requiresWheelchair']) || data.requiresWheelchair is bool)
+        && (!data.keys().hasAny(['requiresHighChair']) || data.requiresHighChair is bool);
+    }
+
+    function isValidUser(data) {
+      return data.keys().hasAll(['name', 'phone', 'email', 'createdAt'])
+        && data.keys().size() == 4
+        && data.name is string && data.name.size() <= 100
+        && data.phone is string && data.phone.size() <= 30
+        && data.email is string && data.email.size() <= 100
+        && data.createdAt is string && data.createdAt.size() <= 50;
+    }
+
+    // Collection: Users
+    match /users/{userId} {
+      allow read: if isAdmin() || (isSignedIn() && request.auth.uid == userId);
+      allow write: if isSignedIn() && request.auth.uid == userId && isValidUser(incoming());
+    }
+
+    // Collection: Reservations
+    match /reservations/{reservationId} {
+      // get: permitted to admins, owners, or individual anonymous bookings
+      allow get: if isAdmin() 
+        || (isSignedIn() && existing().userId == request.auth.uid)
+        || existing().userId == "anonymous";
+
+      // list: permitted ONLY to admins or queries filtered strictly for user's own reservations
+      allow list: if isAdmin() 
+        || (isSignedIn() && resource.data.userId == request.auth.uid);
+
+      // create: permitted to valid reservation payloads matching creator identity
+      allow create: if isValidReservation(incoming()) 
+        && (
+          isAdmin()
+          || (isSignedIn() && incoming().userId == request.auth.uid)
+          || (!isSignedIn() && incoming().userId == "anonymous")
+        );
+
+      // update: limited to admins or reservation owners performing specific actions (rescheduling or cancellation)
+      allow update: if isValidReservation(incoming()) 
+        && (
+          isAdmin()
+          || (
+            isSignedIn() 
+            && existing().userId == request.auth.uid 
+            && incoming().userId == existing().userId
+            && (
+              // Action 1: Re-scheduling (date & time updated; status reset to Pending)
+              (incoming().status == "Pending" && incoming().diff(existing()).affectedKeys().hasOnly(['date', 'time', 'status']))
+              // Action 2: Cancellation
+              || (incoming().status == "Cancelled" && incoming().diff(existing()).affectedKeys().hasOnly(['status']))
+            )
+          )
+        );
+
+      // delete: restricted strictly to administrators
+      allow delete: if isAdmin();
+    }
+  }
+}

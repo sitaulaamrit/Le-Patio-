@@ -1,0 +1,6 @@
+{
+  "name": "Le Patio - Luxury Rooftop & Outdoor Restaurant",
+  "description": "Le Patio in Kathmandu is a luxury rooftop and outdoor restaurant offering outdoor seating, fine cocktails, great beer selection, live music, and professional services.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

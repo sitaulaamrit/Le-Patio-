@@ -1,0 +1,174 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+@import "tailwindcss";
+
+:root {
+  /* Default: Classic Noir Theme Variables -> Updated to lighter slate dark */
+  --charcoal-color: #1E2329;
+  --panel-color: #262B33;
+  --panel-light-color: #313740;
+  --gold-color: #D4AF37;
+  --gold-light-color: #E5C158;
+  --gold-dark-color: #B3922E;
+
+  --theme-bg-0f: #1E2329;
+  --theme-bg-12: #21262D;
+  --theme-bg-14: #232930;
+  --theme-bg-15: #242A31;
+  --theme-bg-16: #262B33;
+  --theme-bg-18: #292E36;
+  --theme-bg-1a: #292E36;
+  --theme-bg-1f: #313740;
+  --theme-bg-22: #363C45;
+  --theme-bg-2a: #404652;
+  --theme-bg-0b: #181C21;
+  --theme-bg-09: #14171B;
+
+  --theme-text-f5: #F5F5F5;
+  --theme-border-white-5: rgba(255, 255, 255, 0.08);
+  --theme-border-white-10: rgba(255, 255, 255, 0.15);
+  --theme-border-white-20: rgba(255, 255, 255, 0.25);
+}
+
+:root[data-theme="creme"] {
+  /* Elegant Cream & Gold Theme Variables */
+  --charcoal-color: #FAF8F5;
+  --panel-color: #EAE2D5;
+  --panel-light-color: #DFD5C6;
+  --gold-color: #B38600; /* Higher contrast gold for readability */
+  --gold-light-color: #C59B27;
+  --gold-dark-color: #8A6500;
+
+  --theme-bg-0f: #FAF8F5;
+  --theme-bg-12: #F3ECE2;
+  --theme-bg-14: #EDE6DA;
+  --theme-bg-15: #EDE6DA;
+  --theme-bg-16: #EAE2D5;
+  --theme-bg-18: #DFD5C6;
+  --theme-bg-1a: #DFD5C6;
+  --theme-bg-1f: #E5DAC9;
+  --theme-bg-22: #FFFFFF;
+  --theme-bg-2a: #F6F1E9;
+  --theme-bg-0b: #EAE2D5;
+  --theme-bg-09: #201A15; /* Elegant dark footer for classic look */
+
+  --theme-text-f5: #1C1917;
+  --theme-border-white-5: rgba(28, 25, 23, 0.08);
+  --theme-border-white-10: rgba(28, 25, 23, 0.12);
+  --theme-border-white-20: rgba(28, 25, 23, 0.2);
+
+  /* Target Tailwind compiled text classes for inversion */
+  .text-white { color: #1C1917 !important; }
+  .text-gray-100 { color: #292524 !important; }
+  .text-gray-200 { color: #302E2B !important; }
+  .text-gray-300 { color: #44403C !important; }
+  .text-gray-400 { color: #57534E !important; }
+  .text-gray-500 { color: #78716C !important; }
+  .placeholder\:text-gray-500::placeholder { color: #8C8581 !important; }
+  
+  /* Buttons and interactive elements on creme should have darker secondary texts */
+  .border-white\/5 { border-color: rgba(28, 25, 23, 0.08) !important; }
+  .border-white\/10 { border-color: rgba(28, 25, 23, 0.12) !important; }
+  .border-white\/20 { border-color: rgba(28, 25, 23, 0.2) !important; }
+  .divide-white\/5 > :not([hidden]) ~ :not([hidden]) { border-color: rgba(28, 25, 23, 0.08) !important; }
+
+  /* Keep certain buttons text color white (e.g., confirmations, CTA, primary buttons) */
+  .bg-gold, .bg-gold-light, .bg-red-600, .bg-green-600, .bg-amber-600 {
+    color: #1C1917 !important;
+  }
+  .bg-gold .text-charcoal, .bg-gold-light .text-charcoal {
+    color: #FAF8F5 !important;
+  }
+}
+
+:root[data-theme="vert"] {
+  /* Jade Courtyard Theme Variables */
+  --charcoal-color: #051811;
+  --panel-color: #0E2E23;
+  --panel-light-color: #123C2E;
+  --gold-color: #D4AF37;
+  --gold-light-color: #E5C158;
+  --gold-dark-color: #B3922E;
+
+  --theme-bg-0f: #051811;
+  --theme-bg-12: #082218;
+  --theme-bg-14: #0A281E;
+  --theme-bg-15: #0A281E;
+  --theme-bg-16: #0E2E23;
+  --theme-bg-18: #123C2E;
+  --theme-bg-1a: #123C2E;
+  --theme-bg-1f: #1C5441;
+  --theme-bg-22: #164636;
+  --theme-bg-2a: #1C5441;
+  --theme-bg-0b: #03120D;
+  --theme-bg-09: #020B08;
+
+  --theme-text-f5: #F4F7F5;
+  --theme-border-white-5: rgba(255, 255, 255, 0.05);
+  --theme-border-white-10: rgba(255, 255, 255, 0.1);
+  --theme-border-white-20: rgba(255, 255, 255, 0.2);
+}
+
+@theme {
+  --font-serif: "Playfair Display", "Georgia", serif;
+  --font-sans: "Inter", "system-ui", sans-serif;
+  
+  --color-gold: var(--gold-color);
+  --color-gold-light: var(--gold-light-color);
+  --color-gold-dark: var(--gold-dark-color);
+  --color-charcoal: var(--charcoal-color);
+  --color-panel: var(--panel-color);
+  --color-panel-light: var(--panel-light-color);
+}
+
+@layer base {
+  html {
+    font-size: 17px; /* Make default fonts slightly bigger */
+  }
+  
+  body {
+    background-color: var(--color-charcoal);
+    color: var(--theme-text-f5);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    transition: background-color 0.4s ease, color 0.4s ease;
+  }
+  
+  h1, h2, h3, h4, .font-serif {
+    font-family: var(--font-serif);
+  }
+}
+
+/* Custom smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Hide scrollbar for clean custom horizontal scrolling if needed */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Dynamic theme classes for custom tailwind overrides */
+.bg-\[\#0F0F0F\] { background-color: var(--theme-bg-0f) !important; transition: background-color 0.4s ease; }
+.bg-\[\#121212\] { background-color: var(--theme-bg-12) !important; transition: background-color 0.4s ease; }
+.bg-\[\#141414\] { background-color: var(--theme-bg-14) !important; transition: background-color 0.4s ease; }
+.bg-\[\#151515\] { background-color: var(--theme-bg-15) !important; transition: background-color 0.4s ease; }
+.bg-\[\#161616\] { background-color: var(--theme-bg-16) !important; transition: background-color 0.4s ease; }
+.bg-\[\#181818\] { background-color: var(--theme-bg-18) !important; transition: background-color 0.4s ease; }
+.bg-\[\#1A1A1A\] { background-color: var(--theme-bg-1a) !important; transition: background-color 0.4s ease; }
+.bg-\[\#1F1F1F\] { background-color: var(--theme-bg-1f) !important; transition: background-color 0.4s ease; }
+.bg-\[\#1f1f1f\] { background-color: var(--theme-bg-1f) !important; transition: background-color 0.4s ease; }
+.bg-\[\#222\] { background-color: var(--theme-bg-22) !important; transition: background-color 0.4s ease; }
+.bg-\[\#2a2a2a\] { background-color: var(--theme-bg-2a) !important; transition: background-color 0.4s ease; }
+.bg-\[\#0B0B0B\] { background-color: var(--theme-bg-0b) !important; transition: background-color 0.4s ease; }
+.bg-\[\#090909\] { background-color: var(--theme-bg-09) !important; transition: background-color 0.4s ease; }
+
+.text-\[\#F5F5F5\] { color: var(--theme-text-f5) !important; transition: color 0.4s ease; }
+.border-white\/5 { border-color: var(--theme-border-white-5) !important; transition: border-color 0.4s ease; }
+.border-white\/10 { border-color: var(--theme-border-white-10) !important; transition: border-color 0.4s ease; }
+.border-white\/20 { border-color: var(--theme-border-white-20) !important; transition: border-color 0.4s ease; }
+.divide-white\/5 > :not([hidden]) ~ :not([hidden]) { border-color: var(--theme-border-white-5) !important; transition: border-color 0.4s ease; }
